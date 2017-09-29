@@ -1,2 +1,2 @@
 # Demeter.IdentityComponent
-asp.net core 2.0 Identity Component based on MongoDB
+asp.net core 2.0 Identity Component based on MongoDB, which allows you to build ASP.NET Core 2.0 web applications, including membership, login, role, and user data. With this library, your user's data stored on MongoDB.
