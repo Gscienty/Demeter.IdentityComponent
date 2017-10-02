@@ -17,7 +17,7 @@ namespace Demeter.IdentityComponent.AspNetCore.Extension
             IConfiguration configuration,
             Action<IdentityOptions> optionsAction = null)
         {
-            IConfigurationSection section = configuration.GetSection("MongoDB");
+            IConfigurationSection section = configuration.GetSection("DemeterIdentityMongoDB");
 
             services.Configure<MongoDbSettings>(options => {
                 options.ConnectionString = section.GetSection("ConnectionString").Value;
