@@ -23,6 +23,12 @@ namespace SimpleSignIn
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDemeterAccount(Configuration, options => {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 0;
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
             });
             services.AddMvc();
         }

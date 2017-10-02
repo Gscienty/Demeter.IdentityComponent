@@ -1,3 +1,5 @@
+using Demeter.IdentityComponent;
+
 namespace SimpleSignIn.Models
 {
     public class RegisterModel

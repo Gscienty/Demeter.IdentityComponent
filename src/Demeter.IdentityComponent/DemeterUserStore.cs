@@ -50,7 +50,7 @@ namespace Demeter.IdentityComponent
         }
 
         public Task SetProfile<T>(TUser user, string key, T profile,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken) where T : class, new()
         {
             if (user == null)
             {
@@ -67,7 +67,7 @@ namespace Demeter.IdentityComponent
                 throw new ArgumentNullException(nameof(profile));
             }
 
-            user.SetProfile(key, profile);
+            user.SetProfile<T>(key, profile);
 
             return Task.FromResult(0);
         }

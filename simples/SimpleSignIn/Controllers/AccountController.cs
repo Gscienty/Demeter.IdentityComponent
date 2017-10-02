@@ -23,11 +23,11 @@ namespace SimpleSignIn.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult SignIn() => View();
+        public ActionResult Register() => View();
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult> SignIn(RegisterModel registerModel)
+        public async Task<ActionResult> Register(RegisterModel registerModel)
         {
             DemeterUserIdentity user = new DemeterUserIdentity(registerModel.Username);
             
@@ -36,8 +36,31 @@ namespace SimpleSignIn.Controllers
                 Address = registerModel.Address,
                 RealName = registerModel.Realname
             });
+            IdentityResult result = await this._userManager.CreateAsync(user, registerModel.Password);
 
-            await this._userManager.CreateAsync(user, registerModel.Password);
+            return RedirectToAction("Index", "Home");
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult Login() => View();
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> Login(LoginModel loginModel)
+        {
+            var result = await this._signInManager.PasswordSignInAsync(
+                loginModel.Username,
+                loginModel.Password,
+                false,
+                false);
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Logout()
+        {
+            await this._signInManager.SignOutAsync();
 
             return RedirectToAction("Index", "Home");
         }

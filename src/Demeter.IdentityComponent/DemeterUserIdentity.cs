@@ -4,6 +4,7 @@ using Demeter.IdentityComponent.Model;
 using MongoDB.Bson;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using MongoDB.Bson.Serialization;
 
 namespace Demeter.IdentityComponent
 {
@@ -11,7 +12,7 @@ namespace Demeter.IdentityComponent
     {
         private List<DemeterUserClaim> _claims;
         private List<DemeterUserLogin> _logins;
-        private Dictionary<String, Object> _profiles;
+        private BsonDocument _profiles;
         private List<string> _roles;
 
         public string Id { get; private set; }
@@ -67,7 +68,12 @@ namespace Demeter.IdentityComponent
             get
             {
                 this.EnsureProfiles();
-                return new BsonDocument(this._profiles);
+                return this._profiles;
+            }
+            private set
+            {
+                this.EnsureProfiles();
+                this._profiles.AddRange(value);
             }
         }
 
@@ -101,25 +107,24 @@ namespace Demeter.IdentityComponent
             this.CreatedOn = new Occurence();
         }
 
-        public void SetProfile<T>(string key, T profile)
+        public void SetProfile<T>(string key, T profile) where T : class, new()
         {
             this.EnsureProfiles();
-
-            this._profiles.Add(key, profile);
+            
+            this._profiles.Add(key, profile.ToBsonDocument());
         }
-        public T GetProfile<T>(string key)
+        public T GetProfile<T>(string key) where T : class, new()
         {
             if (this._profiles == null)
             {
                 return default(T);
             }
 
-            if (this._profiles.ContainsKey(key) == false)
+            if (this._profiles.Contains(key) == false)
             {
                 return default(T);
             }
-
-            return (T) this._profiles[key];
+            return BsonSerializer.Deserialize<T>(this._profiles[key].AsBsonDocument);
         }
 
         public void SetAccessFailedCount(int accessFailedCount)
@@ -262,7 +267,7 @@ namespace Demeter.IdentityComponent
         {
             if (this._profiles == null)
             {
-                this._profiles = new Dictionary<string, Object>();
+                this._profiles = new BsonDocument();
             }
         }
 
