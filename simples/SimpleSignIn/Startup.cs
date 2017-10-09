@@ -22,7 +22,7 @@ namespace SimpleSignIn
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDemeterAccount(Configuration, options => {
+            services.AddDemeterIdentity(Configuration, options => {
                 options.Password.RequireDigit = false;
                 options.Password.RequiredLength = 0;
                 options.Password.RequiredUniqueChars = 0;

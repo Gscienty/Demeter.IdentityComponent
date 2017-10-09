@@ -12,12 +12,12 @@ namespace Demeter.IdentityComponent.AspNetCore.Extension
 {
     public static class ConfigureExtension
     {
-        public static void AddDemeterAccount(
+        public static void AddDemeterIdentity(
             this IServiceCollection services,
             IConfiguration configuration,
             Action<IdentityOptions> optionsAction = null)
         {
-            IConfigurationSection section = configuration.GetSection("DemeterIdentityMongoDB");
+            IConfigurationSection section = configuration.GetSection("DemeterIdentity");
 
             services.Configure<MongoDbSettings>(options => {
                 options.ConnectionString = section.GetSection("ConnectionString").Value;
